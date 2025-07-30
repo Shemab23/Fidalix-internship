@@ -1,0 +1,7 @@
+#        creating migration
+sequelize migration:create --name create_user_table
+sequelize db:migrate
+
+#       creating seeder
+sequelize seed:generate --name demo-users
+sequelize db:seed:all

@@ -1,0 +1,16 @@
+
+backend/node_modules
+# Ignore node_modules folder in backend
+backend/node_modules/
+
+# Ignore all .env files (for secrets)
+*.env
+
+# Ignore logs
+*.log
+
+# Ignore temporary/backup Office files
+~$*.docx
+
+# Ignore reference.txt (only if it's inside the project root)
+reference.txt
