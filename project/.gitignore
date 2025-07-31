@@ -2,6 +2,7 @@
 backend/node_modules
 # Ignore node_modules folder in backend
 backend/node_modules/
+backend/DB_tables.js
 
 # Ignore all .env files (for secrets)
 *.env
