@@ -5,3 +5,159 @@ sequelize db:migrate
 #       creating seeder
 sequelize seed:generate --name demo-users
 sequelize db:seed:all
+
+
+import './App.css';
+import { useState, useEffect } from 'react';
+
+// Reusable display component
+const Text = ({ message }) => {
+  return (
+    <h1 className="text-md font-bold ">{message}</h1>
+  );
+};
+
+// Blog fetching component
+const Blog = () => {
+  const [blogs, setBlogs] = useState([]);
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const response = await fetch('http://localhost:3010/temp/blog');
+        if (!response.ok) {
+          console.error(`HTTP ERROR ${response.status}`);
+          return;
+        }
+        const data = await response.json();
+        setBlogs(data);
+      } catch (err) {
+        console.error(`error: ${err.message}`);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
+
+  return (
+    <>
+      {blogs.map((msg) => (
+        <div key={msg.id} >
+          <Text message={`ID: ${msg.id}`} />
+          <Text message={`Path: ${msg.path}`} />
+          <Text message={`Title: ${msg.title}`} />
+          <Text message={`Description: ${msg.description}`} />
+        </div>
+      ))}
+    </>
+  );
+};
+
+// Main App component
+export default function App() {
+  const arr = ['hello', 'world', 'mwana'];
+
+  return (
+    <>
+      {arr.map((item, index) => (
+        <Text key={index} message={item} />
+      ))}
+
+      <Blog />
+    </>
+  );
+}
+-----
+import React from 'react';
+
+function App() {
+  const scrollTo = (id) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  return (
+    <div className="grid gap-4 p-4">
+      <nav className="flex gap-2">
+        <button
+          className="bg-blue-500 text-white px-3 py-1 rounded"
+          onClick={() => scrollTo('box1')}
+        >
+          Go to Box 1
+        </button>
+        <button
+          className="bg-blue-500 text-white px-3 py-1 rounded"
+          onClick={() => scrollTo('box3')}
+        >
+          Go to Box 3
+        </button>
+      </nav>
+
+      <div
+        id="box1"
+        className="w-[700px] h-[500px] bg-black text-white flex items-center justify-center"
+      >
+        box 1
+      </div>
+      <div className="w-[700px] h-[500px] bg-green-500 text-black flex items-center justify-center">
+        box 2
+      </div>
+      <div
+        id="box3"
+        className="w-[700px] h-[500px] bg-black text-white flex items-center justify-center"
+      >
+        box 3
+      </div>
+      <div className="w-[700px] h-[500px] bg-green-500 text-black flex items-center justify-center">
+        box 4
+      </div>
+    </div>
+  );
+}
+
+export default App;
+---
+### ✅ Summary of Your Issue & Fix
+
+**❌ Problem**:
+You changed model associations (like `User.hasMany(Store)`), but **Sequelize didn’t recognize the updates** because `sequelize.sync()` wasn’t syncing changes.
+
+---
+
+**✅ Crucial Fix**:
+You added this in your `models/index.js` or wherever models are synced:
+
+```js
+await sequelize.sync({ alter: true });
+```
+
+This made Sequelize **re-sync models with the DB schema**, including **updated associations**.
+
+---
+
+**🛠️ Files Involved**:
+
+* `models/index.js` → for setting up models and associations.
+* `connection.js` → holds the `sequelize` instance.
+* `routes/*.js` → to test and confirm associations with `.findByPk(... include: [...] )`.
+
+---
+
+**💡 Trick to Remember**:
+When you **change associations**, always run:
+
+```js
+sequelize.sync({ alter: true });
+```
+
+So Sequelize **updates the schema** without dropping tables.
+
+---
+
+Now your associations (e.g., `User → Store`) work with aliases and can be queried successfully. ✅
+
+-----------
+
+
+
+
