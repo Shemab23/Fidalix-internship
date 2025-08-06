@@ -86,16 +86,10 @@ const Table = ({ headers = [], rows = [] }) => {
                     ))}
                 <td className="px-4 py-2 border-b border-gray-200 text-center">
                   <button
-                    onClick={() => alert(`edit row number ${rowIndex}`)}
-                    className="text-blue-600 hover:underline mr-3"
-                  >
-                    Edit
-                  </button>
-                  <button
                     onClick={() => alert(`delete row number ${rowIndex}`)}
-                    className="text-red-600 hover:underline"
+                    className="text-blue-700 hover:underline bg-secondary"
                   >
-                    Delete
+                    serve
                   </button>
                 </td>
               </tr>
@@ -112,21 +106,23 @@ const TablePartner = ({ headers = [], rows = [] }) => {
   const [filteredRows, setFilteredRows] = useState(rows);
   const [visible,setVisible] = useState(false);
 // for partner add form
-  const [partnerName,setPartnerName] = useState('');
-  const [partnerFile,setPartnerFile] = useState(null);
+  const [productName,setProductName] = useState('');
+  const [productFile,setProductFile] = useState(null);
+  const [productMeaure,setProductMeasure] = useState('');
 
   const handlePartnerRegister = async () =>{
-    if(!partnerName || !partnerFile){
+    if(!productName || !productFile || !productMeaure){
       alert(`please fill out both fields.`);
       return;
     }
 
     const formData = new FormData();
-    formData.append("name",partnerName);
-    formData.append("profile_path",partnerFile);
+    formData.append("name",productName);
+    formData.append("profile_path",productFile);
+    formData.append("measure",productMeaure);
 
     try {
-      const res = await fetch("http://localhost:3010/register/partner",{
+      const res = await fetch(" http://localhost:3010/register/product",{/// name,measure,profile_path
         method:"POST",
         body:formData,
       });
@@ -135,8 +131,9 @@ const TablePartner = ({ headers = [], rows = [] }) => {
 
       if(res.ok){
         alert(data.msg || "partner registerd");
-        setPartnerName('');
-        setPartnerFile(null);
+        setProductName('');
+        setProductMeasure('');
+        setProductFile(null);
       }else{
         alert(data.Error || "upload failed")
       }
@@ -148,10 +145,10 @@ const TablePartner = ({ headers = [], rows = [] }) => {
 
   const chunkSize = 5;
 
-  const Addpartner = () =>{
+  const Addproduct = () =>{
     setVisible(true);
   }
-  const Addpartnerclose = () =>{
+  const Addproductclose = () =>{
     setVisible(false);
   }
 
@@ -177,22 +174,31 @@ const TablePartner = ({ headers = [], rows = [] }) => {
     <div className="w-full flex flex-col items-center relative">
       {/* add a partner form */}
       {visible && (
-        <div className='h-[400px] w-[400px] bg-blue-200/90 flex  flex-col items-center border-4 border-white rounded-xl absolute top-2 left-5 mt-10'>
+        <div className='h-[470px] w-[400px] bg-blue-200/90 flex  flex-col items-center border-4 border-white rounded-xl absolute top-2 left-5 mt-3'>
         <button
           className='absolute right-0 top-0 font-bold text-sm text-white bg-red-500 '
-          onClick={()=>Addpartnerclose()}
+          onClick={()=>Addproductclose()}
           >
           x
         </button>
-        <div className='font-semibold flex justify-center h-[60px]  underline'>Add a new Partner</div>
+        <div className='font-semibold flex justify-center h-[60px]  underline'>Add a new Product</div>
         <div className='h-[300px] flex flex-col gap-12 w-[300px] pt-12'>
           <div className='px-3 flex gap-3 items-center text-xl'>
             name:
             <input
               type="text"
               id="#" placeholder="Partner's brand name" className='shadow-xl rounded-lg h-[35px] p-1'
-              value={partnerName}
-              onChange={(e)=>setPartnerName(e.target.value)}
+              value={productName}
+              onChange={(e)=>setProductName(e.target.value)}
+            />
+          </div>
+          <div className='px-3 flex gap-3 items-center text-xl'>
+            measure:
+            <input
+              type="text"
+              id="#" placeholder="Partner's brand name" className='shadow-xl rounded-lg h-[35px] p-1'
+              value={productMeaure}
+              onChange={(e)=>setProductMeasure(e.target.value)}
             />
           </div>
           <div className=' flex gap-3 items-center text-xl'>
@@ -201,17 +207,13 @@ const TablePartner = ({ headers = [], rows = [] }) => {
               type="file"
               id="#"
               className='shadow-xl rounded-lg h-[35px] w-[250px]'
-              onChange={(e)=>setPartnerFile(e.target.files[0])}
+              onChange={(e)=>setProductFile(e.target.files[0])}
             />
           </div>
           <div className='px-6 flex flex-col gap-4'>
             <div className='flex justify-evenly '>
-              <button className='text-white bg-secondary' onClick={handlePartnerRegister}>Register</button>
+              <button className='text-white bg-secondary' onClick={handlePartnerRegister}>Submit</button>
             </div>
-            <div className='flex justify-center'>Forgot your password? Click  <span
-            className='text-primary mx-1 cursor-pointer'
-            onClick={()=>{alert(`we sent a one time password at +25078*******`)}}
-            >here</span></div>
           </div>
         </div>
       </div>
@@ -222,9 +224,9 @@ const TablePartner = ({ headers = [], rows = [] }) => {
       {/* Add button */}
       <button
         className='absolute right-0 p-4 m-5 font-bold text-lg text-white bg-primary'
-        onClick={()=>Addpartner()}
+        onClick={()=>Addproduct()}
         >
-        Add a partner
+        Add a Product
       </button>
       {/* Search Input */}
       <input
@@ -296,7 +298,7 @@ const TablePartner = ({ headers = [], rows = [] }) => {
   );
 };
 
-const Admin = () => {
+const Business = () => {
   const headers=["Name", "Email", "Role"];
   const rows=[
     ["Alice", "alice@example.com", "Admin"],
@@ -312,7 +314,7 @@ const Admin = () => {
     <div className='flex flex-col justify-center items-center gap-10 p-10'>
       <div className="p-4 flex flex-col itmes-center gap-4">
         <div className='text-xl font-bold underline flex justify-center'>
-        All users
+        All orders
         </div>
         <div className='h-[500px] w-[1600px] bg-red-200/50'>
         <Table
@@ -322,15 +324,10 @@ const Admin = () => {
           />
         </div>
       </div>
+
       <div className="p-4 flex flex-col itmes-center gap-4">
         <div className='text-xl font-bold underline flex justify-center'>
-        All history
-        </div>
-        <div className='h-[500px] w-[1600px] bg-red-200/50'></div>
-      </div>
-      <div className="p-4 flex flex-col itmes-center gap-4">
-        <div className='text-xl font-bold underline flex justify-center'>
-        partners
+        Products
         </div>
         <div className='h-[500px] w-[1600px] bg-red-200/50'>
           <TablePartner
@@ -344,4 +341,4 @@ const Admin = () => {
   )
 }
 
-export default Admin;
+export default Business;
