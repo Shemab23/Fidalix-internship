@@ -10,7 +10,7 @@ const Order = () => {
   useEffect(() => {
     if (Array.isArray(card)) {
       const newTotal = card.reduce((sum, item) => {
-        const unitPrice = item?.stores?.[0]?.price || 0; // for deep objects use condition extration of value; proceed if it is not null || undefined
+        const unitPrice = item?.storing?.[0]?.price || 0; // for deep objects use condition extration of value; proceed if it is not null || undefined
         const quantity = item.quantity || 1;
         return sum + unitPrice * quantity;
       }, 0);
@@ -56,7 +56,7 @@ const Order = () => {
             {/* Items container - scrollable */}
             <div className='flex-grow w-[13vw]'>
               {card.map((item, index) => {
-                const unitPrice = item?.stores?.[0]?.price || 0;
+                const unitPrice = item?.storing?.[0]?.price || 0;
 
                 const handleAmountChange = (e) => {
                   const amount = Math.max(Number(e.target.value), 1);// limite to 1>=  restrict NAN
@@ -75,8 +75,8 @@ const Order = () => {
                   >
                     <p><strong>Name:</strong> {item.name}</p>
                     <p><strong>Measure:</strong> {item.measure}</p>
-                    <p><strong>Unit Price:</strong> ${unitPrice}</p>
-                    <p><strong>Total:</strong> ${totalPerItem}</p>
+                    <p><strong>Unit Price:</strong> {unitPrice}RWF</p>
+                    <p><strong>Total:</strong> {totalPerItem}RWF</p>
 
                     <div className='flex items-center gap-2 mt-1'>
                       <label htmlFor={`qty-${index}`} className='text-sm'>
@@ -114,7 +114,7 @@ const Order = () => {
               </div>
               <button
                 className='right-0 bg-accent text-primary font-bold'
-                onClick={()=>alert(`You ordered A card worthy: ${total}`)}
+                onClick={()=>alert(`You ordered A card worthy: ${total}`,setCard([]))}
               >Order My card</button>
             </div>
           </>

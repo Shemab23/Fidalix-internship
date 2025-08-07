@@ -5,7 +5,7 @@ import {motion as Motion} from 'framer-motion'
 const Logo = ({children}) => {
   return (
     <Motion.div
-  className="text-lg font-bold text-green-900 h-[40px] w-[70px] bg-blue-300 flex items-center justify-center  rounded-xl cursor-pointer  ring-4"
+  className={`text-lg font-bold text-green-900  h-[40px] w-[70px] bg-blue-300 flex items-center justify-center  rounded-xl cursor-pointer  ring-4`}
   style={{ fontFamily: 'Bungee'}}
   initial = {{
     scale: 0.7,

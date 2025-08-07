@@ -2,14 +2,47 @@ import React from 'react'
 import { useState,useEffect } from 'react';
 import Logo from '../components/Logo'
 import Navbar from '../components/Navbar'
+import { useNavigate } from 'react-router-dom';
+// import { get } from 'https';
 
 
-const Table = ({ headers = [], rows = [] }) => {
+const Table = () => {
+  const [rows, setRows] = useState([]);
   const [activeTab, setActiveTab] = useState(0);
   const [searchText, setSearchText] = useState("");
-  const [filteredRows, setFilteredRows] = useState(rows);
+  const [filteredRows, setFilteredRows] = useState([]);
 
   const chunkSize = 5;
+  const headers = ["phone", "location", "product", "amount", "payment", "createdAt"];
+
+  // Fetch data and set rows
+  useEffect(() => {
+    const getOrders = async () => {
+      try {
+        const result = await fetch('http://localhost:3010/order', {
+          method: "GET",
+        });
+        const data = await result.json();
+
+        const refined = data.map(el => [
+          el.ordered?.phone || '',
+          el.ordered?.location || '',
+          el.orderCost?.ordeCart?.name || '',
+          el.orderCost?.amount || '',
+          el.payment ? "Paid" : "Unpaid",
+          new Date(el.createdAt).toLocaleString() || ''
+        ]);
+
+        setRows(refined);
+        setFilteredRows(refined);
+      } catch (err) {
+        alert(`Error: ${err.message}`);
+      }
+    };
+
+    getOrders();
+  }, []);
+
 
   useEffect(() => {
     const text = searchText.trim().toLowerCase();
@@ -86,7 +119,7 @@ const Table = ({ headers = [], rows = [] }) => {
                     ))}
                 <td className="px-4 py-2 border-b border-gray-200 text-center">
                   <button
-                    onClick={() => alert(`delete row number ${rowIndex}`)}
+                    onClick={() => alert(`server order No: ${rowIndex + 1}`)}
                     className="text-blue-700 hover:underline bg-secondary"
                   >
                     serve
@@ -100,7 +133,10 @@ const Table = ({ headers = [], rows = [] }) => {
     </div>
   );
 };
-const TablePartner = ({ headers = [], rows = [] }) => {
+const TableProducts = () => {
+
+  const headers = ["id","path","name","measure"]
+  const [rows,setRows] = useState([]);
   const [activeTab, setActiveTab] = useState(0);
   const [searchText, setSearchText] = useState("");
   const [filteredRows, setFilteredRows] = useState(rows);
@@ -110,7 +146,27 @@ const TablePartner = ({ headers = [], rows = [] }) => {
   const [productFile,setProductFile] = useState(null);
   const [productMeaure,setProductMeasure] = useState('');
 
-  const handlePartnerRegister = async () =>{
+  useEffect(()=>{
+    const getProducts = async()=>{
+      const result = await fetch(` http://localhost:3010/products`,{
+        method: "GET"
+      });
+      const data = await result.json();
+      const flatten = data?.map(row=>(
+        [
+          row.id,
+          row.path,
+          row.name,
+          row.measure
+        ]
+      ));
+      setRows(flatten);
+    }
+    getProducts();
+  },[]);
+
+
+  const handleProductaddition = async () =>{
     if(!productName || !productFile || !productMeaure){
       alert(`please fill out both fields.`);
       return;
@@ -143,7 +199,7 @@ const TablePartner = ({ headers = [], rows = [] }) => {
     }
   };
 
-  const chunkSize = 5;
+  const chunkSize = 3;
 
   const Addproduct = () =>{
     setVisible(true);
@@ -187,7 +243,7 @@ const TablePartner = ({ headers = [], rows = [] }) => {
             name:
             <input
               type="text"
-              id="#" placeholder="Partner's brand name" className='shadow-xl rounded-lg h-[35px] p-1'
+              id="#" placeholder="product name" className='shadow-xl rounded-lg h-[35px] p-1'
               value={productName}
               onChange={(e)=>setProductName(e.target.value)}
             />
@@ -196,7 +252,7 @@ const TablePartner = ({ headers = [], rows = [] }) => {
             measure:
             <input
               type="text"
-              id="#" placeholder="Partner's brand name" className='shadow-xl rounded-lg h-[35px] p-1'
+              id="#" placeholder="measurement" className='shadow-xl rounded-lg h-[35px] p-1'
               value={productMeaure}
               onChange={(e)=>setProductMeasure(e.target.value)}
             />
@@ -212,7 +268,7 @@ const TablePartner = ({ headers = [], rows = [] }) => {
           </div>
           <div className='px-6 flex flex-col gap-4'>
             <div className='flex justify-evenly '>
-              <button className='text-white bg-secondary' onClick={handlePartnerRegister}>Submit</button>
+              <button className='text-white bg-secondary' onClick={handleProductaddition}>Submit</button>
             </div>
           </div>
         </div>
@@ -239,7 +295,7 @@ const TablePartner = ({ headers = [], rows = [] }) => {
 
       {/* Tabs if rows > 5 */}
       {rowChunks.length > 1 && (
-        <div className="flex mb-4 gap-2 w-[70vw]">
+        <div className="flex mb-4 gap-3 w-[70vw] ">
           {rowChunks.map((_, i) => (
             <button
               key={i}
@@ -255,7 +311,7 @@ const TablePartner = ({ headers = [], rows = [] }) => {
       )}
 
       {/* Table */}
-      <div className="overflow-x-auto rounded-xl shadow-md  w-[70vw]">
+      <div className="overflow-x-auto rounded-xl shadow-md  w-[70vw] mt-2">
         <table className="min-w-full table-auto border-4 border-blue-300/40">
           <thead className="bg-gray-100 text-left">
             <tr>
@@ -273,7 +329,11 @@ const TablePartner = ({ headers = [], rows = [] }) => {
                 {Array.isArray(row)
                   ? row.map((cell, i) => (
                       <td key={i} className="px-4 py-2 border-b border-blue-200">
-                        {cell}
+                        {i === 1 ? (
+                          <img src={cell} alt="preview" className="w-16 h-16 object-cover rounded" />
+                        ) : (
+                          cell
+                        )}
                       </td>
                     ))
                   : headers.map((key, i) => (
@@ -299,29 +359,19 @@ const TablePartner = ({ headers = [], rows = [] }) => {
 };
 
 const Business = () => {
-  const headers=["Name", "Email", "Role"];
-  const rows=[
-    ["Alice", "alice@example.com", "Admin"],
-    ["Bob", "bob@example.com", "User"],
-    ["Charlie", "charlie@example.com", "Editor"],
-    ["Dana", "dana@example.com", "User"],
-    ["Eve", "eve@example.com", "Admin"],
-    ["Frank", "frank@example.com", "User"],
-  ]
-  const headersPartner = ["profile","name"]
-  const rowsPartner = [["/images/image1","bank of kigali"],["/images/image1","bank of kigali"],["/images/image1","bank of kigali"],["/images/image1","bank of kigali"],["/images/image1","bank of kigali"],["/images/image1","bank of kigali"],["/images/image1","bank of kigali"]];
+  const navigate = useNavigate();
+
   return (
-    <div className='flex flex-col justify-center items-center gap-10 p-10'>
+    <div className='flex flex-col justify-center items-center gap-10 p-10 relative'>
+      <button className='absolute top-0 right-0 m-5 h-[40px] w-[70px] flex items-center justify-center text-white bg-primary'
+      onClick={()=>navigate('/')}
+      > logout</button>
       <div className="p-4 flex flex-col itmes-center gap-4">
         <div className='text-xl font-bold underline flex justify-center'>
         All orders
         </div>
         <div className='h-[500px] w-[1600px] bg-red-200/50'>
-        <Table
-          headers={headers} rows={rows}
-          // onEdit={(row) => console.log("Edit:", row)}
-          // onDelete={(row) => console.log("Delete:", row)}
-          />
+        <Table/>
         </div>
       </div>
 
@@ -330,11 +380,7 @@ const Business = () => {
         Products
         </div>
         <div className='h-[500px] w-[1600px] bg-red-200/50'>
-          <TablePartner
-          headers={headersPartner} rows={rowsPartner}
-          // onEdit={(row) => console.log("Edit:", row)}
-          // onDelete={(row) => console.log("Delete:", row)}
-          />
+          <TableProducts />
         </div>
       </div>
     </div>

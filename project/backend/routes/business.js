@@ -23,7 +23,7 @@ routes.get('/owner/:id', async (req, res) => {
     const productsWithStores = await Product.findAll({
     include: [{
         model: Store,
-        as: 'stores',
+        as: 'storing',
         required: true,
         where: {shop_id : id},
         include: [{

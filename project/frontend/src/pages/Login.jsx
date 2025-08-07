@@ -1,17 +1,65 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {motion as Motion} from 'framer-motion'
+/**
+ * {
+    "msg": "Logged in successfully",
+    "user": {
+        "id": 7,
+        "kind": "delivery",
+        "name": "Bavakure",
+        "location": "Gasabo-Kigali-Rwanda",
+        "phone": "+250795644455",
+        "profile_path": "/images/7-Bavakure.jpg",
+        "password": "bavakure",
+        "createdAt": "2025-08-07T15:36:33.000Z",
+        "updatedAt": "2025-08-07T15:36:33.000Z"
+    }
+}
 
+name password
+ */
 const Loginform = ({kind}) =>{
   const navigate = useNavigate();
+  const [name,setName] = useState('');
+  const [password,setPassowrd] = useState('');
 
-  const handleclicklogin = () =>{
+    const handleclicklogin = () =>{
     if(kind === 'customer'){
       navigate('/Home');
     }else{
       navigate('/business');
     }
   }
+    const handleLogin = async () =>{
+      if(!name||!password){
+        alert(`all fleids are required`);
+        return;
+      }
+
+      try {
+        const response = await fetch('http://localhost:3010/login',{
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ name, password })
+        });
+        const result = await response.json();
+
+        if (result.msg === "Logged in successfully") {
+          localStorage.setItem("user", JSON.stringify(result.user));
+          alert(`logged in successfully`);
+          handleclicklogin();
+        }else{
+          alert(`Error: ${result.msg}`);
+        }
+      } catch (err) {
+        alert(`Login failed, Error: ${err.message}`);
+      }
+    }
+
+
   const handleclickRegister = () =>{
     navigate('/register');
   }
@@ -20,16 +68,20 @@ const Loginform = ({kind}) =>{
       <div className=' flex justify-center font-bold text-xl underline'>{kind} - Login Form</div>
       <div className='px-[30px] font-semibold flex gap-4 items-center'>
         User Name:
-        <input type="text"  id="name" placeholder='Username' className='shadow rounded-md h-[30px] text-md p-4'/>
+        <input type="text"  value={name} placeholder='Username' className='shadow rounded-md h-[30px] text-md p-4'
+        onChange={(e)=>setName(e.target.value)}
+        />
       </div>
       <div className='px-[30px] font-semibold flex gap-7 items-center'>
         Password:
-        <input type="password"  id="name"  placeholder='* * * * * * * * * * *' className=' shadow rounded-md h-[30px] text-md p-4'/>
+        <input type="password"  value={password}  placeholder='* * * * * * * * * * *' className=' shadow rounded-md h-[30px] text-md p-4'
+        onChange={(e)=>setPassowrd(e.target.value)}
+        />
       </div>
       <div className='flex justify-center gap-8'>
         <button
           className='bg-secondary text-white'
-          onClick={()=>handleclicklogin()}
+          onClick={()=>handleLogin()}
           >Login</button>
         <button
           className='bg-primary text-white'
@@ -47,8 +99,6 @@ const Loginform = ({kind}) =>{
 const Login = () => {
     const navigate = useNavigate();
     const [kind,setKind] = useState('customer');
-
-
     const handleclick= (value) =>{
         setKind(value);
     }

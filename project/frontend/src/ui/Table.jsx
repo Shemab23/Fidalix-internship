@@ -97,7 +97,6 @@ const DataTable = ({ headers = [], rows = [] }) => {
           <h3 className='font-semibold underline text-xl'>Shop</h3>
           <div>
             <Products items={[`${infoVisible[0].id}`]}/>
-             {/* {infoVisible[0].id} */}
           </div>
         </div>
       )}

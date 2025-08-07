@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { motion as Motion } from "framer-motion";
 import Logo from "./Logo";
+import { useNavigate } from "react-router-dom";
+// import {useNavigate} from 'react-router-dom'
 
-const Navbar = () => {
+const Navbar = ({user}) => {
+  const navigate = useNavigate();
   const [clicked, setClicked] = useState('');
 
   const scrollTo = (id) => {
@@ -37,13 +40,15 @@ const Navbar = () => {
         ))}
 
       </div>
-      <div className="bg-red-200 h-[50px] w-[50px] flex items-center justify-center">
-        profile
-      </div>
+      <button onClick={()=>navigate('/')}>Logout</button>
+      <img
+        src= {user.profile_path}
+        alt="profile"
+        className="h-[50px] w-[50px] object-cover rounded-lg"/>
     </nav>
   );
 };
-
+/** <img src={cell} alt="preview" className="w-16 h-16 object-cover rounded" /> */
 export default Navbar;
 
 

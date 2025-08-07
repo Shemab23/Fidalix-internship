@@ -28,13 +28,6 @@ const BusinessTable = () => {
   return (
     <>
       <Table rows={refined} headers={headers}/>
-      {/* {refined.map((e)=>(
-        <p> {e}</p>
-      ))}
-      {headers.map((e)=>(
-        <p> {e}</p>
-      ))} */}
-
     </>
   );
 };

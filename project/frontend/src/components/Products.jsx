@@ -64,10 +64,10 @@ const Products = ({ items: Id }) => {
               <div className="w-[160px] h-[160px] bg-red-200/30 mb-2" />
               <h2 className="text-lg font-semibold">{item.name}</h2>
               <p className="text-sm text-gray-600">Measure: {item.measure}</p>
-              {item.stores && item.stores.length > 0 && (
+              {item.storing && item.storing?.length > 0 && (
                 <div className="mt-2">
                   <p>
-                    Price: <span>{item.stores[0].price}</span> RWF
+                    Price: <span>{item.storing?.[0]?.price}</span> RWF
                   </p>
                   <Motion.button
                     initial={{ scale: 0.6 }}
