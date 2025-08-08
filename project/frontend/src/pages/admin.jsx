@@ -14,9 +14,7 @@ const Table = () => {
 
   const headers=["id","kind","name","location","phone","profile_path","password"];
 
-
-
-useEffect(() => {
+  useEffect(() => {
   const getUsers = async () => {
     try {
       const res = await fetch('http://localhost:3010/user');
@@ -28,7 +26,31 @@ useEffect(() => {
   };
 
   getUsers();
+
 }, []);
+
+  const HandleDelete = async (id) => {
+    try {
+      const res = await fetch(`http://localhost:3010/user/delete/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) {
+        throw new Error(`Request failed with status ${res.status}`);
+      }
+
+      const data = await res.json();
+      if (data === 1 || data?.success === true) {
+        alert(`Deleted user ${id} successfully`);
+      } else {
+        alert(`Deleting failed`);
+      }
+    } catch (err) {
+      alert(`Error: ${err.message}`);
+    }
+  };
+
+
 
   const chunkSize = 3;
 
@@ -43,7 +65,7 @@ const matches = rows.filter((row) =>
 
 
     setFilteredRows(matches);
-    setActiveTab(0); // reset to first tab on new search
+    setActiveTab(0);
   }, [searchText, rows]);
 
   const rowChunks = [];
@@ -108,7 +130,7 @@ const matches = rows.filter((row) =>
                     ))}
                 <td className="px-4 py-2 border-b border-gray-200 text-center">
                   <button
-                    onClick={() => alert(`delete row number ${rowIndex}`)}
+                    onClick={() =>HandleDelete(row.id)}
                     className="text-red-600 hover:underline"
                   >
                     Delete
@@ -393,11 +415,11 @@ const TableHistory = () => {
           row.orderCost?.amount,
           row.orderCost?.ordeCart?.productImage,
           row.orderCost?.ordeCart?.Product,
-          row.orderCost?.ordeCart?.storing?.[0].unitPrice,
-          row.orderCost?.ordeCart?.storing?.[0].shopOwner?.shopName,
-          row.orderCost?.ordeCart?.storing?.[0].shopOwner?.shopLocation,
-          row.orderCost?.ordeCart?.storing?.[0].shopOwner?.shopPhone,
-          row.orderCost?.ordeCart?.storing?.[0].shopOwner?.shopProfile,
+          row.orderCost?.ordeCart?.storing?.[0]?.unitPrice,
+          row.orderCost?.ordeCart?.storing?.[0]?.shopOwner?.shopName,
+          row.orderCost?.ordeCart?.storing?.[0]?.shopOwner?.shopLocation,
+          row.orderCost?.ordeCart?.storing?.[0]?.shopOwner?.shopPhone,
+          row.orderCost?.ordeCart?.storing?.[0]?.shopOwner?.shopProfile,
           row.orderDelivery?.deliveryStatus || "NOT YET",
           row.orderDelivery?.totalCost || "NOT YET",
           row.orderDelivery?.ordersDestination?.deliveryName || "NOT YET",

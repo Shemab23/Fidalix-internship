@@ -7,14 +7,14 @@ const DataTable = ({ headers = [], rows = [] }) => {
   const [visible,setVisible] = useState(false);
   const [infoVisible,setInfovisible] = useState([]);
   const test = rows[0] || [];
-  const minLength = Math.min(headers.length||0, test.length || 0);// if no title given, its data won't display
-  const trimmedHeaders = headers.slice(0, minLength);// refine headrs to account the available rows
-  const trimmedRows = rows.map((row) => row.slice(0, minLength));//
+  const minLength = Math.min(headers.length||0, test.length || 0);
+  const trimmedHeaders = headers.slice(0, minLength);
+  const trimmedRows = rows.map((row) => row.slice(0, minLength));
 
   const handleClick = (visibleRowIndex) => {
     const realIndex = page * rowsPerPage + visibleRowIndex;
-    const row = rows[realIndex]; // the full, untrimmed row
-    const rowId = row[0]; // adjust this if your `id` is not at index 0
+    const row = rows[realIndex];
+    const rowId = row[0];
 
     setVisible(true);
     setInfovisible([{ id: rowId, info: "am in", row }]);
@@ -28,11 +28,11 @@ const DataTable = ({ headers = [], rows = [] }) => {
 
   const rowsPerPage = 5;
 
-  const totalPages = Math.ceil(trimmedRows.length / rowsPerPage);// maximum pages to need
+  const totalPages = Math.ceil(trimmedRows.length / rowsPerPage);
 
   const visibleRows = trimmedRows.slice(
-    page * rowsPerPage,// 0*8   0
-    (page + 1) * rowsPerPage//1*8`
+    page * rowsPerPage,
+    (page + 1) * rowsPerPage
   );
 
   return (

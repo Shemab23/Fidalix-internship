@@ -4,13 +4,14 @@ import BusinessTable from '../components/BusinessTable.jsx';
 import { UserContext } from '../context/UserContext.jsx';
 
 const Order = () => {
-  const { card, setCard } = useContext(UserContext);// card undefined??
+  const { card, setCard } = useContext(UserContext);
+
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
     if (Array.isArray(card)) {
       const newTotal = card.reduce((sum, item) => {
-        const unitPrice = item?.storing?.[0]?.price || 0; // for deep objects use condition extration of value; proceed if it is not null || undefined
+        const unitPrice = item?.storing?.[0]?.price || 0;
         const quantity = item.quantity || 1;
         return sum + unitPrice * quantity;
       }, 0);
@@ -59,7 +60,7 @@ const Order = () => {
                 const unitPrice = item?.storing?.[0]?.price || 0;
 
                 const handleAmountChange = (e) => {
-                  const amount = Math.max(Number(e.target.value), 1);// limite to 1>=  restrict NAN
+                  const amount = Math.max(Number(e.target.value), 1);
                   const updated = [...card];
                   updated[index] = { ...updated[index], quantity: amount };
                   setCard(updated);

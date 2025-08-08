@@ -161,3 +161,280 @@ Now your associations (e.g., `User → Store`) work with aliases and can be quer
 
 
 
+--------------------------------------------------
+console.log("Payment:", data.payment);
+console.log("Bank:", data.bank);
+console.log("Bank Card:", data.bank_card);
+
+// Ordered
+console.log("Customer Name:", data.ordered.ownerName);
+console.log("Customer Location:", data.ordered.ownerLocation);
+console.log("Customer Phone:", data.ordered.ownerPhone);
+console.log("Customer Profile:", data.ordered.ownerProfile);
+
+// Order Cost
+console.log("Order Amount:", data.orderCost.amount);
+
+// Order Cart
+console.log("Product Image:", data.orderCost.ordeCart.productImage);
+console.log("Product:", data.orderCost.ordeCart.Product);
+
+// Loop through stores
+data.orderCost.ordeCart.stores.forEach((store, index) => {
+  console.log(`Store ${index + 1} Unit Price:`, store.unitPrice);
+  console.log(`Store ${index + 1} Shop Name:`, store.shopOwner.shopName);
+  console.log(`Store ${index + 1} Shop Location:`, store.shopOwner.shopLocation);
+  console.log(`Store ${index + 1} Shop Phone:`, store.shopOwner.shopPhone);
+  console.log(`Store ${index + 1} Shop Profile:`, store.shopOwner.shopProfile);
+});
+
+// Order Delivery
+console.log("Delivery Status:", data.orderDelivery.deliveryStatus);
+console.log("Delivery Cost:", data.orderDelivery.totalCost);
+
+// Delivery Destination
+console.log("Delivery Name:", data.orderDelivery.ordersDestination.deliveryName);
+console.log("Delivery Location:", data.orderDelivery.ordersDestination.deliveryLocation);
+console.log("Delivery Phone:", data.orderDelivery.ordersDestination.deliveryPhone);
+console.log("Delivery Profile:", data.orderDelivery.ordersDestination.deliveryProfile);
+
+history:
+[
+  {
+    "payment": true,
+    "bank": "Bank of Kigali",
+    "bank_card": "BK-23334-2233 ",
+    "ordered": {
+      "ownerName": "customer1",
+      "ownerLocation": "Kigali-Nyarugenge",
+      "ownerPhone": "+250788990000",
+      "ownerProfile": "./public/image/customer1"
+    },
+    "orderCost": {
+      "amount": 3,
+      "ordeCart": {
+        "productImage": "./public/image/product1",
+        "Product": "product1",
+        "stores": [
+          {
+            "unitPrice": 450,
+            "shopOwner": {
+              "shopName": "business1",
+              "shopLocation": "Kigali-Nyarugenge",
+              "shopPhone": "+250777999800",
+              "shopProfile": "./public/image/business1"
+            }
+          }
+        ]
+      }
+    },
+    "orderDelivery": {
+      "deliveryStatus": "ordered",
+      "totalCost": 4000,
+      "ordersDestination": {
+        "deliveryName": "delivery1",
+        "deliveryLocation": "Kigali-Nyarugenge",
+        "deliveryPhone": "+250788559800",
+        "deliveryProfile": "./public/image/delivery1"
+      }
+    }
+  },
+  {
+    "payment": false,
+    "bank": "equity",
+    "bank_card": "EQ-23554-2233 ",
+    "ordered": {
+      "ownerName": "business1",
+      "ownerLocation": "Kigali-Nyarugenge",
+      "ownerPhone": "+250777999800",
+      "ownerProfile": "./public/image/business1"
+    },
+    "orderCost": {
+      "amount": 2,
+      "ordeCart": {
+        "productImage": "./public/image/product2",
+        "Product": "product2",
+        "stores": [
+          {
+            "unitPrice": 400,
+            "shopOwner": {
+              "shopName": "business1",
+              "shopLocation": "Kigali-Nyarugenge",
+              "shopPhone": "+250777999800",
+              "shopProfile": "./public/image/business1"
+            }
+          }
+        ]
+      }
+    },
+    "orderDelivery": {
+      "deliveryStatus": "pending",
+      "totalCost": 4200,
+      "ordersDestination": {
+        "deliveryName": "delivery1",
+        "deliveryLocation": "Kigali-Nyarugenge",
+        "deliveryPhone": "+250788559800",
+        "deliveryProfile": "./public/image/delivery1"
+      }
+    }
+  },
+  {
+    "payment": false,
+    "bank": "I&M bank",
+    "bank_card": "IM-20054-2233 ",
+    "ordered": {
+      "ownerName": "delivery1",
+      "ownerLocation": "Kigali-Nyarugenge",
+      "ownerPhone": "+250788559800",
+      "ownerProfile": "./public/image/delivery1"
+    },
+    "orderCost": {
+      "amount": 1,
+      "ordeCart": {
+        "productImage": "./public/image/product4",
+        "Product": "product3",
+        "stores": [
+          {
+            "unitPrice": 444,
+            "shopOwner": {
+              "shopName": "business1",
+              "shopLocation": "Kigali-Nyarugenge",
+              "shopPhone": "+250777999800",
+              "shopProfile": "./public/image/business1"
+            }
+          }
+        ]
+      }
+    },
+    "orderDelivery": {
+      "deliveryStatus": "received",
+      "totalCost": 4500,
+      "ordersDestination": {
+        "deliveryName": "delivery1",
+        "deliveryLocation": "Kigali-Nyarugenge",
+        "deliveryPhone": "+250788559800",
+        "deliveryProfile": "./public/image/delivery1"
+      }
+    }
+  },
+  {
+    "payment": true,
+    "bank": "bank of kigali",
+    "bank_card": "bk-4547-222",
+    "ordered": {
+      "ownerName": "business1",
+      "ownerLocation": "Kigali-Nyarugenge",
+      "ownerPhone": "+250777999800",
+      "ownerProfile": "./public/image/business1"
+    },
+    "orderCost": {
+      "amount": 4,
+      "ordeCart": {
+        "productImage": "./public/image/product4",
+        "Product": "product3",
+        "stores": [
+          {
+            "unitPrice": 444,
+            "shopOwner": {
+              "shopName": "business1",
+              "shopLocation": "Kigali-Nyarugenge",
+              "shopPhone": "+250777999800",
+              "shopProfile": "./public/image/business1"
+            }
+          }
+        ]
+      }
+    },
+    "orderDelivery": null
+  },
+  {
+    "payment": true,
+    "bank": "bank of kigali",
+    "bank_card": "bk-4547-222",
+    "ordered": {
+      "ownerName": "business1",
+      "ownerLocation": "Kigali-Nyarugenge",
+      "ownerPhone": "+250777999800",
+      "ownerProfile": "./public/image/business1"
+    },
+    "orderCost": {
+      "amount": 4,
+      "ordeCart": {
+        "productImage": "./public/image/product4",
+        "Product": "product3",
+        "stores": [
+          {
+            "unitPrice": 444,
+            "shopOwner": {
+              "shopName": "business1",
+              "shopLocation": "Kigali-Nyarugenge",
+              "shopPhone": "+250777999800",
+              "shopProfile": "./public/image/business1"
+            }
+          }
+        ]
+      }
+    },
+    "orderDelivery": null
+  },
+  {
+    "payment": false,
+    "bank": "equity",
+    "bank_card": "bk-4547-222",
+    "ordered": {
+      "ownerName": "delivery1",
+      "ownerLocation": "Kigali-Nyarugenge",
+      "ownerPhone": "+250788559800",
+      "ownerProfile": "./public/image/delivery1"
+    },
+    "orderCost": {
+      "amount": 7,
+      "ordeCart": {
+        "productImage": "./public/image/product4",
+        "Product": "product3",
+        "stores": [
+          {
+            "unitPrice": 444,
+            "shopOwner": {
+              "shopName": "business1",
+              "shopLocation": "Kigali-Nyarugenge",
+              "shopPhone": "+250777999800",
+              "shopProfile": "./public/image/business1"
+            }
+          }
+        ]
+      }
+    },
+    "orderDelivery": null
+  },
+  {
+    "payment": false,
+    "bank": "equity",
+    "bank_card": "bk-4547-222",
+    "ordered": {
+      "ownerName": "delivery1",
+      "ownerLocation": "Kigali-Nyarugenge",
+      "ownerPhone": "+250788559800",
+      "ownerProfile": "./public/image/delivery1"
+    },
+    "orderCost": {
+      "amount": 7,
+      "ordeCart": {
+        "productImage": "./public/image/product4",
+        "Product": "product3",
+        "stores": [
+          {
+            "unitPrice": 444,
+            "shopOwner": {
+              "shopName": "business1",
+              "shopLocation": "Kigali-Nyarugenge",
+              "shopPhone": "+250777999800",
+              "shopProfile": "./public/image/business1"
+            }
+          }
+        ]
+      }
+    },
+    "orderDelivery": null
+  }
+]

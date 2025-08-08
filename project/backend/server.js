@@ -344,9 +344,9 @@ const startServer = async () => {
       }
     });
 
-    app.delete('/user/delete', async (req, res) => {
+    app.delete('/user/delete/:id', async (req, res) => {//// delete
       try {
-        const { id } = req.body;
+        const id  = req.params.id;
         const deleted = await User.destroy({ where: { id } });
         res.status(200).json(deleted);
       } catch (err) {

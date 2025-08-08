@@ -54,7 +54,7 @@ const Table = () => {
     );
 
     setFilteredRows(matches);
-    setActiveTab(0); // reset to first tab on new search
+    setActiveTab(0);
   }, [searchText, rows]);
 
   const rowChunks = [];
@@ -141,7 +141,7 @@ const TableProducts = () => {
   const [searchText, setSearchText] = useState("");
   const [filteredRows, setFilteredRows] = useState(rows);
   const [visible,setVisible] = useState(false);
-// for partner add form
+// for product add form
   const [productName,setProductName] = useState('');
   const [productFile,setProductFile] = useState(null);
   const [productMeaure,setProductMeasure] = useState('');
