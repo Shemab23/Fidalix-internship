@@ -13,7 +13,6 @@ const blog = ({pk}) => {
         <div className='max-w-[300px] h-[400px]'>
         <img src={one.image} alt="blog image" className="w-full h-full object-contain rounded-md" />
         </div>
-
     </div>
   )
 }

@@ -8,6 +8,7 @@ const Order = () => {
 
   const [total, setTotal] = useState(0);
 
+
   useEffect(() => {
     if (Array.isArray(card)) {
       const newTotal = card.reduce((sum, item) => {
@@ -20,6 +21,7 @@ const Order = () => {
       setTotal(0);
     }
   }, [card]);
+
 
   return (
     <div
