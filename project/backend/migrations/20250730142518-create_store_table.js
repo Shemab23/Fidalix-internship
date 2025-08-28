@@ -27,7 +27,7 @@ export default {
         onUpdate: 'CASCADE'
     },
     price: {
-        type: Sequelize.DOUBLE,
+        type: Sequelize.STRING,
         allowedNull: false
     },
     createdAt: {

@@ -56,25 +56,40 @@ const Register = () => {
   };
 
   return (
-    <div className='flex flex-col justify-center items-center gap-10 p-10'>
-        <div className='h-[80px] w-[700px]  flex items-center justify-center font-bold text-xl underline'> REGISTRATION PAGE  </div>
-        <div className='h-[600px] w-[600px] bg-gray-300/60  border border-4 border-white rounded-xl px-[150px] py-[80px] flex flex-col gap-5'>
-            <div className='flex gap-5 items-center font-semibold'>
+    <div className='relative w-full h-full flex flex-col items-center'>
+      <img
+        src="https://static.vecteezy.com/system/resources/previews/004/979/193/original/hexagon-abstract-green-neon-background-free-vector.jpg"
+        alt="Background"
+        className=" absolute z-[-2] w-full h-full object-cover"
+      />
+
+      {/* Overlay (opacity balance) */}
+      <div className="absolute z-[-1]  inset-0 bg-black/30"></div>
+
+        <div className='h-[10vh] w-[700px]  flex items-center justify-center font-bold text-xl underline text-white'> REGISTRATION PAGE  </div>
+        <div className='h-[90vh] sm:w-[50vw] w-[90vw] bg-gray-600/90  p-2 border-4 border-white rounded-xl flex flex-col justify-evenly'>
+            <div className='flex gap-5 items-center justify-evenly  w-[40vw] font-semibold'>
+              <span>
                 name:
+              </span>
                 <input type="text"  value={name}
                 placeholder = 'your user name'
                 onChange={(e)=>setName(e.target.value)}
                 className='p-4 shadow-lg rounded-lg py-3 h-[40px] w-[200px]' />
             </div>
-            <div className='flex gap-5 items-center font-semibold'>
+           <div className='flex gap-5 items-center justify-evenly  w-[40vw] font-semibold'>
+              <span>
                 Location:
+              </span>
                 <input type="text"  value={location}
                 placeholder = 'district-city-country'
                 onChange={(e)=>setLocation(e.target.value)}
                 className='p-4 shadow-lg rounded-lg py-3 h-[40px] w-[200px]' />
             </div>
-            <div className='flex gap-5 items-center font-semibold'>
-                kind:
+            <div className='flex gap-5 items-center justify-evenly  w-[40vw] font-semibold'>
+              <span>
+                Kind:
+              </span>
                 <select
                 value={kind}
                 onChange={(e) => setKind(e.target.value)}
@@ -87,38 +102,48 @@ const Register = () => {
                 </select>
 
             </div>
-            <div className='flex gap-5 items-center font-semibold'>
+            <div className='flex gap-5 items-center justify-evenly  w-[40vw] font-semibold'>
+              <span>
                 Phone:
+              </span>
                 <input type="text" value={phone}
                 placeholder = '+250 7********'
                 onChange={(e)=>setPhone(e.target.value)}
                 className='p-4 shadow-lg rounded-lg py-3 h-[40px] w-[200px]' />
             </div>
-            <div className='flex gap-5 items-center font-semibold'>
-                profile:
+            <div className='flex gap-5 items-center justify-evenly  w-[45vw] font-semibold'>
+              <span>
+                Profile:
+              </span>
                 <input type="file"
                 className='p-4 shadow-lg rounded-lg py-3 h-[40px] w-[270px]'
                 onChange={(e)=>setpath(e.target.files[0])}/>
             </div>
-            <div className='flex gap-5 items-center font-semibold'>
-                password:
+            <div className='flex gap-5 items-center justify-evenly  w-[40vw] font-semibold'>
+              <span>
+                Password:
+              </span>
                 <input type="password"  value={password1}
                 placeholder = '**********'
                 className='p-4 shadow-lg rounded-lg py-3 h-[40px] w-[200px]'
                 onChange={(e)=>setPassowrd1(e.target.value)}/>
             </div>
-            <div className='flex gap-5 items-center font-semibold'>
-                confirm password:
+            <div className='flex gap-5 items-center justify-evenly  w-[40vw] font-semibold'>
+              <span>
+                Confirm Password:
+              </span>
                 <input type="password"  value={password2}
                 placeholder = '**********'
                 className='p-4 shadow-lg rounded-lg py-3 h-[40px] w-[200px]'
                 onChange={(e)=>setPassowrd2(e.target.value)} />
             </div>
             <div className='flex justify-center'>
-                <button className='bg-primary text-white font-bold mt-10 w-[100px] shadow-xl'
+                <button className='bg-primary text-white font-bold p-2 rounded-xl shadow-xl'
                 onClick={()=>handleSubmit()}
                 >Register</button>
             </div>
+            <p className='flex justify-center'>Already have an Account <span className='pl-2 underline text-blue-400 cursor-pointer'
+            onClick={()=>navigate('/')}>Click Here</span></p>
         </div>
         {/* name,location,phone,profile_path,password */}
     </div>

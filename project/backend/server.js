@@ -89,39 +89,38 @@ const startServer = async () => {
     }
   });
 
-  app.post('/register/product', upload.single('profile_path'), async (req, res) => {// name measure profile_path
-    try {
-      const {name,measure} = req.body;
+// server.js
+app.post('/register/product', upload.single('profile_path'), async (req, res) => {
+  try {
+    const { name, measure } = req.body;
 
-      // Create partner with blank image path
-      const result = await Product.create({ name,measure, profile_path: '' });
-      const id = result.id;
+    // Create product with blank image path
+    const result = await Product.create({ name, measure, profile_path: '' });
+    const id = result.id;
 
-      // Get file extension and final filename
-      const extension = path.extname(req.file.originalname);
-      const Filename = `${id}-${name}${extension}`;
+    // Get file extension and final filename
+    const extension = path.extname(req.file.originalname);
+    const Filename = `${id}-${name}${extension}`;
 
+    const imageDir = path.join(__dirname, '..', 'frontend', 'public', 'images');
+    if (!fs.existsSync(imageDir)) fs.mkdirSync(imageDir, { recursive: true });
 
-      const imageDir = path.join(__dirname, '..', 'frontend', 'public', 'images');
-          if (!fs.existsSync(imageDir)) {
-            fs.mkdirSync(imageDir, { recursive: true });
-      }
+    // Write image to disk
+    const fullPath = path.join(imageDir, Filename);
+    fs.writeFileSync(fullPath, req.file.buffer);
 
-      // Write image to disk
-      const fullPath = path.join(imageDir, Filename);
-      fs.writeFileSync(fullPath, req.file.buffer);
+    // Update image path in DB
+    const imagePath = `/images/${Filename}`;
+    await Product.update({ profile_path: imagePath }, { where: { id } });
 
-      // Update image path in the DB
-      const imagePath = `/images/${Filename}`;
-      const [updated] = await Product.update({ profile_path: imagePath }, { where: { id } });
+    // ✅ Return the product ID so frontend can use it
+    res.status(201).json({ id, msg: 'Product uploaded successfully' });
 
-      const msg = updated === 1 ? 'Uploaded successfully' : 'Failed to update image path';
-      res.status(201).json({ msg:msg });
+  } catch (error) {
+    res.status(500).json({ Error: error.message });
+  }
+});
 
-    } catch (error) {
-      res.status(500).json({ Error: `${error.message}` });
-    }
-  });
   app.post('/user', upload.single('profile_path'), async (req, res) => {// name, location, kind, phone, profile_path, password
     try {
       const { name, location, phone, password, kind } = req.body;

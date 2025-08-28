@@ -7,12 +7,14 @@ const UserProvider = ({ children }) => {
 
   const [card,setCard] = useState([]);
 
+  const [inn,setInn] = useState(null);// current user id
 
   return (
     <UserContext.Provider value={{
 
       user, setUser,
-      card,setCard
+      card,setCard,
+      inn,setInn
      }}>
       {children}
     </UserContext.Provider>

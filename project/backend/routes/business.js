@@ -17,6 +17,7 @@ routes.get('/',async (req,res)=>{
 })
 
 
+
 routes.get('/owner/:id', async (req, res) => {
   try {
     const id = req.params.id;
@@ -41,6 +42,28 @@ routes.get('/owner/:id', async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 });
+
+// routes.js
+routes.post('/store/:id_b/:id_p', async (req, res) => {
+  try {
+    const { id_b, id_p } = req.params;
+    const { price } = req.body;
+
+    const [store, created] = await Store.upsert({
+      shop_id: id_b,
+      product_id: id_p,
+      price
+    });
+
+    return res.status(200).json({
+      message: created ? "Store entry created" : "Store entry updated",
+      store
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
 
 
 

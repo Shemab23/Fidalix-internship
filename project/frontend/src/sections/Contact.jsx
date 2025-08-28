@@ -1,44 +1,75 @@
-import React from 'react'
-import { useState } from 'react'
+import React, { useState } from "react";
 
 const Contact = () => {
-  const [name,setName] = useState('');
-  const [email,setEmail] = useState('');
-  const [message,setMessage] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
 
-  const handleSubmition = ()=>{
-    if(!name || !email ||!message){
-      alert(`Fill all sections!`);
+  const handleSubmition = () => {
+    if (!name || !email || !message) {
+      alert("Fill all sections!");
       return;
     }
-    setEmail('');
-    setMessage('');
-    setName('');
-    alert(`Thank, you for you message.`)
-  }
-  return (
-    <div
-        id='contact'
-        className=' h-[565px] w-screen bg-indigo-300 flex flex-col items-center py-6 gap-6'>
-        <div className='font-bold text-xl underline '>Contact Us </div>
-        <div className='h-[400px] w-[600px] bg-black/30 text-black text-lg font-bold flex flex-col p-12 border border-4 rounded-lg'>
-          <div className='h-[70px] p-4 flex gap-3 '>
-            names :
-            <input type="text" value={name} onChange={(e)=>setName(e.target.value)} className='rounded-lg shadow-lg w-[300px] text-sm p-3' placeholder='Your name'/>
-          </div>
-          <div className='h-[70px] p-4 flex gap-6 '>
-            Email :
-            <input type="text" value={email} onChange={(e)=>setEmail(e.target.value)} className='rounded-lg shadow-lg w-[300px] text-sm p-3' placeholder='your@email'/>
-          </div>
-          <div className='h-[240px] p-4 flex gap-[5px] '>
-            Message :
-            {/* <input type="text-area" className='rounded-lg shadow-lg font-semibold'/> */}
-            <textarea name="message" value={message} onChange={(e)=>setMessage(e.target.value)} className='rounded-lg shadow-lg font-semibold w-[300px] text-sm p-2' placeholder='Type your maessage here'/>
-          </div>
-        </div>
-        <button onClick={()=>handleSubmition()}>Submit</button>
-    </div>
-  )
-}
+    setName("");
+    setEmail("");
+    setMessage("");
+    alert("Thank you for your message.");
+  };
 
-export default Contact
+  return (
+    <section
+      id="contact"
+      className="w-full py-12 bg-gradient-to-r from-indigo-300 via-purple-300 to-pink-300 flex flex-col items-center gap-6"
+    >
+      <h2 className="font-bold text-2xl underline">Contact Us</h2>
+
+      <div className="w-full max-w-lg bg-black/20 p-8 rounded-xl shadow-lg flex flex-col gap-4">
+        {/* Name */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+          <label className="font-semibold w-24">Name:</label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="flex-1 p-3 rounded-lg shadow-md text-sm"
+            placeholder="Your name"
+          />
+        </div>
+
+        {/* Email */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+          <label className="font-semibold w-24">Email:</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="flex-1 p-3 rounded-lg shadow-md text-sm"
+            placeholder="your@email.com"
+          />
+        </div>
+
+        {/* Message */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+          <label className="font-semibold w-24">Message:</label>
+          <textarea
+            name="message"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            className="flex-1 p-3 rounded-lg shadow-md text-sm resize-none h-32"
+            placeholder="Type your message here"
+          />
+        </div>
+
+        {/* Submit Button */}
+        <button
+          onClick={handleSubmition}
+          className="self-end bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-6 py-2 rounded shadow-md transition-all"
+        >
+          Submit
+        </button>
+      </div>
+    </section>
+  );
+};
+
+export default Contact;

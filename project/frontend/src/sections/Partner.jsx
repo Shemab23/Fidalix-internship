@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
-const Part = ({ path = 'pathdefault', name = 'namedefault' }) => {
+const Part = ({ path = "pathdefault", name = "namedefault" }) => {
   return (
-    <div className='flex flex-col h-[200px] w-[170px] items-center py-1'>
-      <div className='h-[160px] w-[160px] bg-gray-300/80 flex items-center justify-center rounded-full'>
-        <img src={path} alt="Logo" />
+    <div className="flex item-center flex-col py-1 w-[140px] sm:w-[160px]">
+      <div>
+        <img src={path} alt={name} className=" border-green-400 border-2 shadow-xl lg:h-[120px] lg:w-[120px] h-[90px] w-[90px] rounded-lg object-cover" />
       </div>
-      <div className='text-lg font-bold'>{name}</div>
+      <div className="text-sm sm:text-lg font-bold text-center mt-2">{name}</div>
     </div>
   );
 };
@@ -17,9 +17,7 @@ const Partner = () => {
   useEffect(() => {
     const getPartners = async () => {
       try {
-        const results = await fetch('http://localhost:3010/partner', {
-          method: "GET"
-        });
+        const results = await fetch("http://localhost:3010/partner");
         const data = await results.json();
         setPartners(data);
       } catch (err) {
@@ -30,16 +28,18 @@ const Partner = () => {
   }, []);
 
   return (
-    <div
-      id='partner'
-      className='h-[250px] w-screen flex items-center py-5 flex-col'>
-      <div className='font-bold underline text-lg'>Partner</div>
-      <div className='h-[200px] w-[90vw] flex justify-evenly'>
+    <section
+      id="partner"
+      className="w-full bg-gradient-to-r from-purple-100 via-pink-200 to-blue-200 flex flex-col items-center"
+    >
+      <h2 className="font-bold underline text-lg sm:text-xl mb-4">Partners</h2>
+
+      <div className="w-[90%] flex flex-wrap justify-center gap-4 sm:gap-6">
         {partners.map((item, index) => (
           <Part key={index} path={item.path} name={item.name} />
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 

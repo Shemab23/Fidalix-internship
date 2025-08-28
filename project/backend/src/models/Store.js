@@ -3,7 +3,7 @@ import sequelize from "../database/connection.js";
 import Product from "./Product.js";
 import User from "./User.js";
 
-const Store = sequelize.define('store',{
+const Store = sequelize.define('store', {
     shop_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -18,7 +18,7 @@ const Store = sequelize.define('store',{
     product_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        primayKey: true,
+        primaryKey: true, // ✅ fixed typo
         references: {
             model: Product,
             key: 'id'
@@ -27,10 +27,9 @@ const Store = sequelize.define('store',{
         onUpdate: 'CASCADE'
     },
     price: {
-        type: DataTypes.DOUBLE,
-        allowedNull: false
+        type: DataTypes.STRING,
+        allowNull: false  // ✅ fixed
     }
 });
 
 export default Store;
-

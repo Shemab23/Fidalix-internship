@@ -1,102 +1,136 @@
-import { useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import Products from '../components/Products.jsx';
+import { useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import Products from "../components/Products.jsx";
 
 const DataTable = ({ headers = [], rows = [] }) => {
   const [page, setPage] = useState(0);
-  const [visible,setVisible] = useState(false);
-  const [infoVisible,setInfovisible] = useState([]);
-  const test = rows[0] || [];
-  const minLength = Math.min(headers.length||0, test.length || 0);
-  const trimmedHeaders = headers.slice(0, minLength);
-  const trimmedRows = rows.map((row) => row.slice(0, minLength));
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
 
-  const handleClick = (visibleRowIndex) => {
-    const realIndex = page * rowsPerPage + visibleRowIndex;
-    const row = rows[realIndex];
-    const rowId = row[0];
+  const rowsPerPage = 3;
 
-    setVisible(true);
-    setInfovisible([{ id: rowId, info: "am in", row }]);
-  };
+  // Show only first 2 headers in table
 
+  const trimmedHeaders = headers.slice(0, 2);
 
-  const handleClickreverse = ()=>{
-    setVisible(false);
-    setInfovisible([{"id":``,"info":""}]);
-  }
+  // Trimmed rows for table view
 
-  const rowsPerPage = 5;
+  const trimmedRows = rows.map((row) => row.slice(0, 3));
+
+  // data for product popup
+  const data = ["","name:","","","Location:","contact:"];
 
   const totalPages = Math.ceil(trimmedRows.length / rowsPerPage);
-
   const visibleRows = trimmedRows.slice(
     page * rowsPerPage,
     (page + 1) * rowsPerPage
   );
 
-  return (
-    <div className="w-full bg-white rounded-md relative">
-      <table className="w-full table-fixed">
-        <thead>
-          <tr className="bg-blue-400 text-white">
-            {trimmedHeaders.map((header,index) => (
-              <th
-                key={index}
-                className="p-2 border-b  border-b-4 border-black text-left ">
-                {header}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {visibleRows.map((row, i) => (
-            <tr
-              key={i}
-              className={`hover:bg-gray-200 ${i % 2 === 1 ? "bg-blue-100" : "bg-white"}`}
-            >
-              {row.map((cell, j) => (
-                <td key={j} className="p-2 border-b border-r border-dashed">
-                  {cell}
-                </td>
-              ))}
-              <td className="w-[50px] px-4">
-                <button onClick={() => handleClick(i)}>Shop</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
+  const handleRowClick = (rowIndex) => {
+    setSelectedRow(rows[rowIndex]); // full row from original rows
+    setSelectedId(rows[rowIndex][2]); // id is always index 2
+    setModalVisible(true);
+  };
 
-      </table>
-      <div className="flex justify-between items-center mt-5">
+  const closeModal = () => {
+    setModalVisible(false);
+    setSelectedRow(null);
+    setSelectedId(null);
+  };
+
+  return (
+    <div className="w-full bg-white rounded-md relative flex flex-col gap-4">
+      {/* Table container with horizontal scroll */}
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[600px] border-collapse">
+          <thead>
+            <tr>
+              {trimmedHeaders?.map((header, i) => (
+                <th
+                  key={i}
+                  className="bg-blue-400 text-white h-[30px] border-l-2"
+                >
+                  <div className="flex justify-start px-2">{header}</div>
+                </th>
+              ))}
+            </tr>
+          </thead>
+
+          <tbody>
+            {visibleRows.map((row, id) => {
+              const originalIndex = page * rowsPerPage + id; // map back to original rows
+              return (
+                <tr
+                  key={id}
+                  onClick={() => handleRowClick(originalIndex)}
+                  className="cursor-pointer hover:bg-gray-300 border-green shadow-lg"
+                >
+                  <td className="flex justify-center">
+                    <img
+                      src={row[0]}
+                      alt={row[1]}
+                      className="mt-2 h-[9vh] w-[5vw] mx-2 rounded-full"
+                    />
+                  </td>
+                  <td className="border-l-2 p-2">{row[1]}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Pagination */}
+      <div className="flex justify-between items-center flex-wrap gap-2">
         <button
-          onClick={() => setPage((previousPage) =>previousPage - 1)}
+          onClick={() => setPage((prev) => Math.max(prev - 1, 0))}
           disabled={page === 0}
-          className="flex items-center gap-1 text-gray-300 hover:border-indigo-500 disabled:text-gray-500 disabled:cursor-default disabled:bg-gray-300 cursor-pointer"
+          className="flex items-center gap-1 text-gray-600 disabled:text-gray-400 px-3 py-1 border rounded cursor-pointer hover:bg-gray-100 disabled:cursor-not-allowed"
         >
-          <ChevronLeft size={20} /> Previous
+          <ChevronLeft size={18} /> Previous
         </button>
         <span className="text-sm text-gray-600">
-          Tab {page + 1} of {totalPages}
+          Page {page + 1} of {totalPages}
         </span>
         <button
-          onClick={() => setPage((previousPage) =>previousPage + 1)}
+          onClick={() =>
+            setPage((prev) => Math.min(prev + 1, totalPages - 1))
+          }
           disabled={page === totalPages - 1}
-          className="flex items-center gap-1 text-gray-300 hover:border-indigo-500 disabled:text-gray-500 disabled:cursor-default disabled:bg-gray-300 cursor-pointer"
+          className="flex items-center gap-1 text-gray-600 disabled:text-gray-400 px-3 py-1 border rounded cursor-pointer hover:bg-gray-100 disabled:cursor-not-allowed"
         >
-          Next <ChevronRight size={20} />
+          Next <ChevronRight size={18} />
         </button>
       </div>
-      {visible && (
-        <div className="absolute left-[10px] top-[20px] bg-blue-200/90 text-black rounded-lg border border-white border-4 h-[500px] w-[64vw] flex items-center flex-col">
-          <button
-            className=' absolute right-0 h-[8vh] w-[3vw] flex items-center justify-center text-white text-xl bg-red-500/70 hover:bg-red-700'
-            onClick={handleClickreverse}>
-              x
-          </button>
-          <h3 className='font-semibold underline text-xl'>Shop</h3>
-          <div>
-            <Products items={[`${infoVisible[0].id}`]}/>
+
+      {/* Modal Overlay */}
+      {modalVisible && selectedRow && (
+        <div className="fixed inset-0 bg-black/40 flex justify-center items-start pt-20 z-50 px-2">
+          <div className="bg-white/70 text-black rounded-lg w-full max-w-4xl p-6 relative overflow-auto max-h-[85vh]">
+            <button
+              className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700"
+              onClick={closeModal}
+            >
+              ✕
+            </button>
+
+            {/* Dynamically render all values for the row with selectedId */}
+            <div className="flex gap-3 mb-4 items-center">
+              {rows
+                .filter((row) => row[2] === selectedId) // id at index 2
+                .flatMap((row) =>
+                  row.map((value, i) => (
+                    i!== 3 && i!== 2 && <div key={i} className="">
+                      <span className={i=== 0 ? "":"border-l-2 border-green-400 px-1 font-bold"}>{data[i]}</span>
+                      {i===0? (<img src={value} alt={value} className=" h-12 w-12 rounded-lg"/>):(<span>{value}</span>)}
+                    </div>
+                  ))
+                )}
+            </div>
+
+            {/* Example: passing product ID (assuming it's column 2) */}
+            <Products items={[selectedRow[2]]} />
           </div>
         </div>
       )}
