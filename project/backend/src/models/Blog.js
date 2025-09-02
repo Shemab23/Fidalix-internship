@@ -2,7 +2,7 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../database/connection.js";
 
-const Blog = sequelize.define('blog',{
+const Blog = sequelize.define('blog',{// test1
     id: {
         type: DataTypes.INTEGER,
         allowNull: false,

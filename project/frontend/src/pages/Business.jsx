@@ -33,7 +33,7 @@ const OrdersTable = () => {
       } catch (err) {
         alert(err.message);
       }
-    };
+    };// test1
     getOrders();
   }, []);
 
